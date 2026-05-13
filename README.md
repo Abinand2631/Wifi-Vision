@@ -30,12 +30,13 @@ To extract the Wi-Fi CSI data, you need to flash the 3 ESP32 microcontrollers wi
 
 ### Firmware Uploading Steps:
 1. **Download the Firmware:** Download and extract the [ESP CSI Master Code](https://drive.google.com/file/d/15BBSO7Kxio0WqTDHiqB7bMMBoByQiWyD/view?usp=drive_link).
-2. **Open ESP-IDF:** Open your ESP-IDF Command Prompt / Terminal and navigate to the extracted firmware directory.
+   - *Note: The specific firmware projects to upload are `csi_recv` (for your 2 Receivers) and `csi_send` (for your 1 Transmitter). These can be found inside the extracted folder at `esp-csi-master\examples\get-started`.*
+2. **Open ESP-IDF:** Open your ESP-IDF Command Prompt / Terminal and navigate to either the `csi_recv` or `csi_send` directory depending on which board you are flashing.
 3. **Set the Target:** Run `idf.py set-target esp32` to configure the environment for the ESP32 chip.
 4. **Configuration:** Run `idf.py menuconfig`. 
    - Navigate to **Serial flasher config** and ensure the default baud rate is set strictly to **115200**.
 5. **Build and Flash:** Connect your ESP32 via USB and run `idf.py -p COM_PORT flash` (replace `COM_PORT` with your actual port, e.g., `COM3`).
-6. **Repeat:** Repeat this process for all 3 ESP32 boards (1 TX, 2 RX).
+6. **Repeat:** Repeat this process for all 3 ESP32 boards (uploading `csi_send` to 1 TX board, and `csi_recv` to the 2 RX boards).
 
 ## Steps to Reproduce & Run
 
