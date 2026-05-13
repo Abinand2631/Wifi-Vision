@@ -1,5 +1,7 @@
 # Wi-Fi Vision: 3D Digital Twin
 
+**Note:** This is a fully functional, working model developed as my B.Tech final year project.
+
 Wi-Fi Vision is a vision-free, real-time human posture inference system. It utilizes Wi-Fi Channel State Information (CSI) extracted from two ESP32 devices to infer 3D human pose and classify activity states (e.g., Standing, Sitting, Walking, Lying Down). The project features a deep learning architecture (TEDNet Transformer) and a sleek Streamlit dashboard for real-time visualization.
 
 > **Note on Dataset Privacy:** The raw video datasets and accompanying recorded media used during the data collection process have **not** been included in this repository due to privacy constraints. 
