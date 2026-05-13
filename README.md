@@ -4,12 +4,13 @@
 
 Wi-Fi Vision is a vision-free, real-time human posture inference system. It utilizes Wi-Fi Channel State Information (CSI) extracted from three ESP32 devices to infer 3D human pose and classify activity states (e.g., Standing, Sitting, Walking, Lying Down). The project features a deep learning architecture (TEDNet Transformer) and a sleek Streamlit dashboard for real-time visualization.
 
-> **Note on Dataset Privacy:** The raw video datasets and accompanying recorded media used during the data collection process have **not** been included in this repository due to privacy constraints. 
+> **Note on Dataset Privacy (Authenticity):** Unlike many simulated or theoretical repositories online, this is a fully genuine, hardware-tested project. The raw video datasets and accompanying recorded media used during the data collection process have simply been removed from this repository strictly due to personal privacy constraints. 
 
 ## Hardware Requirements
 
 - **GPU:** An NVIDIA Graphics Card is highly recommended/required for training the deep learning model (`train.py`) and running smooth inference.
 - **ESP32:** 3x ESP32 microcontrollers are required (1 acting as a Transmitter/TX, and 2 acting as Receivers/RX for extracting the CSI data).
+  - *Pro Tip:* This project was successfully developed and tested using the ESP32's built-in PCB antennas. However, using ESP32 modules with **external antennas** will significantly improve signal quality, range, and overall model accuracy.
 - **Webcam:** A webcam is required to generate the ground-truth video dataset during the data collection and training phase.
 - **USB Cables:** For connecting the ESP32 boards to the PC.
 
