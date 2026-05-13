@@ -10,6 +10,7 @@ Wi-Fi Vision is a vision-free, real-time human posture inference system. It util
 
 - **GPU:** An NVIDIA Graphics Card is highly recommended/required for training the deep learning model (`train.py`) and running smooth inference.
 - **ESP32:** 3x ESP32 microcontrollers are required (1 acting as a Transmitter/TX, and 2 acting as Receivers/RX for extracting the CSI data).
+- **Webcam:** A webcam is required to generate the ground-truth video dataset during the data collection and training phase.
 - **USB Cables:** For connecting the ESP32 boards to the PC.
 
 ## Software Dependencies
