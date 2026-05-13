@@ -25,11 +25,16 @@ pip install torch torchvision numpy pyserial matplotlib tqdm streamlit
 
 ## ESP32 CSI Setup
 
-To extract the Wi-Fi CSI data, you need to flash both ESP32 microcontrollers with the CSI extraction firmware.
+To extract the Wi-Fi CSI data, you need to flash the 3 ESP32 microcontrollers with the CSI extraction firmware using ESP-IDF (Espressif IoT Development Framework).
 
-1. **Download the Firmware:** [ESP CSI Master Code](https://drive.google.com/file/d/15BBSO7Kxio0WqTDHiqB7bMMBoByQiWyD/view?usp=drive_link)
-2. **Environment:** You must use **ESP-IDF** (Espressif IoT Development Framework) to compile and upload the firmware to the ESP32 boards.
-3. **Configuration:** Make sure to set the Baud Rate to **115200** in the ESP-IDF monitor and in your device manager settings to ensure stable communication.
+### Firmware Uploading Steps:
+1. **Download the Firmware:** Download and extract the [ESP CSI Master Code](https://drive.google.com/file/d/15BBSO7Kxio0WqTDHiqB7bMMBoByQiWyD/view?usp=drive_link).
+2. **Open ESP-IDF:** Open your ESP-IDF Command Prompt / Terminal and navigate to the extracted firmware directory.
+3. **Set the Target:** Run `idf.py set-target esp32` to configure the environment for the ESP32 chip.
+4. **Configuration:** Run `idf.py menuconfig`. 
+   - Navigate to **Serial flasher config** and ensure the default baud rate is set strictly to **115200**.
+5. **Build and Flash:** Connect your ESP32 via USB and run `idf.py -p COM_PORT flash` (replace `COM_PORT` with your actual port, e.g., `COM3`).
+6. **Repeat:** Repeat this process for all 3 ESP32 boards (1 TX, 2 RX).
 
 ## Steps to Reproduce & Run
 
