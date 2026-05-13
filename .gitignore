@@ -68,12 +68,11 @@ env.bak/
 venv.bak/
 
 # Deep Learning Models & Data
-models/
-data/
+# Checkpoints ignored to save space, but models/ and data/ are allowed
 checkpoint/
 
-# Privacy: Excluding videos
-csi_video_capture_external/
+# Privacy: Excluding video files
+
 *.mp4
 *.avi
 *.mkv
