@@ -54,3 +54,9 @@ Once your hardware is set up and the ESP32s are flashed and connected:
 
 - **TEDNet Model:** 1D CNN for feature extraction coupled with a Transformer Encoder to capture temporal dependencies over a 30-frame window.
 - **Classification Engine:** Advanced thresholding and kinetic gating to detect specific human activities based on the 3D keypoints derived from the Wi-Fi CSI.
+
+## Disclaimer & Contribution
+
+**Disclaimer:** This is an original B.Tech final year project. Please **do not directly copy** or plagiarize this repository for your own academic submissions or commercial use without permission and proper attribution.
+
+**Contributions:** We absolutely welcome valid developers, researchers, and hobbyists to fork, experiment, and build upon this project! If you have improvements, bug fixes, or optimizations, feel free to open a Pull Request.
