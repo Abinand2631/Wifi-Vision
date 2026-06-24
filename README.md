@@ -126,6 +126,8 @@ Or double-click `Start_WiFi_Pose_dashboard.bat` on Windows.
 
 Opens a real-time Streamlit dashboard showing live posture classification from your ESP32 array.
 
+> **Note on Standalone Inference:** If you prefer a simpler UI or want to test different rendering methods, you can run the standalone scripts (`6_test_live_v1.py` and `6_test_live_v2.py`). We recommend trying both versions to see which one works best for your specific setup!
+
 ---
 
 ## Results
