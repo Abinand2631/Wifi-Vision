@@ -44,7 +44,7 @@ def launch_system():
     print(f"Launching WiFi-Pose with RX1: {port1} | RX2: {port2}")
     
     # Launch the main script and close the launcher
-    subprocess.Popen([sys.executable, "6_test_live.py", port1, port2])
+    subprocess.Popen([sys.executable, "6_test_live_v1.py", port1, port2])
     root.destroy()
 
 # --- Build the UI ---
