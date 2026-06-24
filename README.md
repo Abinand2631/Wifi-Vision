@@ -4,8 +4,10 @@
 
 > Built on 3× ESP32 microcontrollers + a custom TEDNet Transformer architecture. No cameras. No wearables. Just Wi-Fi signals.
 
-### 🎬 Project Demo
-https://github.com/Abinand2631/Wifi-Vision/raw/main/Demo/Video.mp4
+### 🎬 [Watch Demo Video](https://drive.google.com/file/d/1l8e24t6Lv1ghA38wdgP2RLYSV3KqK4ME/view?usp=drive_link)
+
+### 📸 Hardware Setup
+![Hardware Setup](Demo/Setup1.jpg)
 
 ---
 
@@ -141,7 +143,7 @@ Model trained on a self-collected dataset of **21,600 frames** across 4 activity
 | Mean Absolute Error (MAE) | 0.041 |
 | Dataset Size | 21,600 frames |
 
-> Low MSE and MAE indicate strong pose regression accuracy on the self-collected dataset. Live inference demo available in the `Demo/` folder.
+> Low MSE and MAE indicate strong pose regression accuracy on the self-collected dataset. Live inference demo available via the link above.
 
 ---
 
@@ -166,6 +168,7 @@ Wifi-Vision/
 ├── dashboard.py              # Streamlit real-time dashboard
 ├── launcher.py               # Application launcher
 ├── Start_WiFi_Pose_dashboard.bat  # Windows one-click launcher
+├── Demo/                          # Setup photo and demo video
 ├── csi_video_capture_external/    # External CSI capture utilities
 ├── data/                     # Preprocessed training data
 └── models/                   # Saved model weights
@@ -180,19 +183,6 @@ Built as a B.Tech Final Year Project (Electronics and Communication Engineering,
 If you build on this work, a mention or citation is appreciated.
 
 **Contributions welcome** — open a PR for improvements, optimizations, or new activity classes.
-
----
-
-## References
-
-1. **Human Detection and Pose Estimation Using Wi-Fi Signals**  
-   *Dr. S Jagadeesha, Dr. Prathibha Kiran, Yaramasa Gautham, Sindhu R, Shaan Ghosh, Sagar N Sankanatti*
-2. **Person-in-WiFi 3D: End-to-End Multi-Person 3D Pose Estimation with Wi-Fi**  
-   *Kangwei Yan, Fei Wang, Bo Qian, Han Ding, Jinsong Han, Xing Wei*
-3. **DensePose From WiFi**  
-   *Mr. Wawale S. N, Miss. Kadlag Siddhi, Miss. Kadlag Tejashree, Miss. Kale Apeksha*
-4. **Wi-Fi based Human Fall and Activity Recognition using Transformer-based Encoder–Decoder and Graph Neural Networks**  
-   *Younggeol Cho, Elisa Motta, Olivia Nocentini, Marta Lagomarsino, Andrea Merello, Marco Crepaldi, and Arash Ajoudani*
 
 ---
 
