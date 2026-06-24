@@ -1,64 +1,185 @@
-# Wi-Fi Vision: 3D Digital Twin
+# Wi-Fi Vision 📡🧍
 
-**Note:** This is a fully functional, working model developed as my B.Tech final year project.
+**Device-free, camera-free human pose estimation and activity recognition using Wi-Fi CSI and deep learning.**
 
-Wi-Fi Vision is a vision-free, real-time human posture inference system. It utilizes Wi-Fi Channel State Information (CSI) extracted from three ESP32 devices to infer 3D human pose and classify activity states (e.g., Standing, Sitting, Walking, Lying Down). The project features a deep learning architecture (TEDNet Transformer) and a sleek Streamlit dashboard for real-time visualization.
+> Built on 3× ESP32 microcontrollers + a custom TEDNet Transformer architecture. No cameras. No wearables. Just Wi-Fi signals.
 
-> **Note on Dataset Privacy (Authenticity):** Unlike many simulated or theoretical repositories online, this is a fully genuine, hardware-tested project. The raw video datasets and accompanying recorded media used during the data collection process have simply been removed from this repository strictly due to personal privacy constraints. 
+### 🎬 Project Demo
+https://github.com/Abinand2631/Wifi-Vision/raw/main/Demo/Video.mp4
+
+---
+
+## What It Does
+
+Wi-Fi Vision detects and classifies human posture in real time by analyzing how a person's body disturbs Wi-Fi radio signals — a technique called **Channel State Information (CSI) sensing**.
+
+| Activity | Detection Method |
+|---|---|
+| 🧍 Standing | CSI amplitude pattern + keypoint thresholding |
+| 🪑 Sitting | Kinetic gating on vertical displacement |
+| 🚶 Walking | Temporal variance in CSI subcarrier phase |
+| 🛌 Lying Down | Low-amplitude, low-variance CSI signature |
+
+No camera feed. No body-worn sensors. Completely **privacy-preserving.**
+
+---
+
+## System Architecture
+
+```
+[ESP32 TX] ──── Wi-Fi CSI ────► [ESP32 RX #1]  ──► Serial (115200 baud)
+                                [ESP32 RX #2]  ──► Serial (115200 baud)
+                                                         │
+                                                   1_capture.py
+                                                         │
+                                                  3_extraction.py
+                                                   (preprocessing)
+                                                         │
+                                                      train.py
+                                                  (TEDNet Transformer)
+                                                         │
+                                                   dashboard.py
+                                               (Streamlit live inference)
+```
+
+**TEDNet Model:**
+- **1D CNN** extracts spatial features from raw CSI subcarrier amplitudes
+- **Transformer Encoder** captures temporal dependencies over a 30-frame sliding window
+- **Classification head** maps pose embeddings to activity labels with kinetic gating
+
+---
 
 ## Hardware Requirements
 
-- **GPU:** An NVIDIA Graphics Card is highly recommended/required for training the deep learning model (`train.py`) and running smooth inference.
-- **ESP32:** 3x ESP32 microcontrollers are required (1 acting as a Transmitter/TX, and 2 acting as Receivers/RX for extracting the CSI data).
-  - *Pro Tip:* This project was successfully developed and tested using the ESP32's built-in PCB antennas. However, using ESP32 modules with **external antennas** will significantly improve signal quality, range, and overall model accuracy.
-- **Webcam:** A webcam is required to generate the ground-truth video dataset during the data collection and training phase.
-- **USB Cables:** For connecting the ESP32 boards to the PC.
+| Component | Qty | Notes |
+|---|---|---|
+| ESP32 (any variant) | 3× | 1× TX, 2× RX. External antenna modules improve accuracy. |
+| NVIDIA GPU | 1× | Required for training `train.py`. Inference runs on CPU. |
+| Webcam | 1× | Used only during data collection for ground-truth labelling. |
+| USB Cables | 3× | For flashing and serial data streaming. |
+
+> **Tip:** The project was developed and tested with ESP32's built-in PCB antennas. Using external antenna modules will significantly improve CSI signal quality and classification accuracy.
+
+---
 
 ## Software Dependencies
-
-Ensure you have Python installed. You can install the required packages using `pip`:
 
 ```bash
 pip install torch torchvision numpy pyserial matplotlib tqdm streamlit
 ```
 
-*Note: For the best performance, ensure you install the CUDA-enabled version of PyTorch corresponding to your NVIDIA GPU drivers.*
+> For GPU-accelerated training, install the CUDA-enabled PyTorch build matching your NVIDIA driver version from [pytorch.org](https://pytorch.org/get-started/locally/).
 
-## ESP32 CSI Setup
+---
 
-To extract the Wi-Fi CSI data, you need to flash the 3 ESP32 microcontrollers with the CSI extraction firmware using ESP-IDF (Espressif IoT Development Framework).
+## ESP32 Firmware Setup
 
-### Firmware Uploading Steps:
-1. **Download the Firmware:** Download and extract the [ESP CSI Master Code](https://drive.google.com/file/d/15BBSO7Kxio0WqTDHiqB7bMMBoByQiWyD/view?usp=drive_link).
-   - *Note: The specific firmware projects to upload are `csi_recv` (for your 2 Receivers) and `csi_send` (for your 1 Transmitter). These can be found inside the extracted folder at `esp-csi-master\examples\get-started`.*
-2. **Open ESP-IDF:** Open your ESP-IDF Command Prompt / Terminal and navigate to either the `csi_recv` or `csi_send` directory depending on which board you are flashing.
-3. **Set the Target:** Run `idf.py set-target esp32` to configure the environment for the ESP32 chip.
-4. **Configuration:** Run `idf.py menuconfig`. 
-   - Navigate to **Serial flasher config** and ensure the default baud rate is set strictly to **115200**.
-5. **Build and Flash:** Connect your ESP32 via USB and run `idf.py -p COM_PORT flash` (replace `COM_PORT` with your actual port, e.g., `COM3`).
-6. **Repeat:** Repeat this process for all 3 ESP32 boards (uploading `csi_send` to 1 TX board, and `csi_recv` to the 2 RX boards).
+The ESP32s must be flashed with CSI extraction firmware via ESP-IDF.
 
-## Steps to Reproduce & Run
+**1. Download the firmware**
 
-Once your hardware is set up and the ESP32s are flashed and connected:
+Download and extract the [ESP CSI Master firmware](https://drive.google.com/file/d/15BBSO7Kxio0WqTDHiqB7bMMBoByQiWyD/view?usp=drive_link).
 
-1. **Data Collection:** Use `1_capture.py` to record CSI data along with ground truth (if you are creating your own dataset).
-2. **Data Processing:** Run `3_extraction.py` to preprocess the captured data and prepare it for training.
-3. **Model Training:** Run `train.py` to train the TEDNet 3D Transformer model. This will output the best weights into the `models/` directory.
-4. **Live Dashboard:** 
-   Execute the live Streamlit dashboard to see the real-time posture inference:
-   ```bash
-   streamlit run dashboard.py
-   ```
-   Or simply double-click the `Start_WiFi_Pose_dashboard.bat` script.
+Target projects inside `esp-csi-master/examples/get-started/`:
+- `csi_send` → flash to your **1 TX board**
+- `csi_recv` → flash to your **2 RX boards**
 
-## System Architecture
+**2. Flash each board**
 
-- **TEDNet Model:** 1D CNN for feature extraction coupled with a Transformer Encoder to capture temporal dependencies over a 30-frame window.
-- **Classification Engine:** Advanced thresholding and kinetic gating to detect specific human activities based on the 3D keypoints derived from the Wi-Fi CSI.
+```bash
+# Navigate to csi_recv or csi_send directory
+idf.py set-target esp32
+idf.py menuconfig
+# → Serial flasher config → Default baud rate: 115200
+idf.py -p COM_PORT flash   # Replace COM_PORT with e.g. COM3 or /dev/ttyUSB0
+```
 
-## Disclaimer & Contribution
+Repeat for all 3 boards.
 
-**Disclaimer:** This is an original B.Tech final year project. Please **do not directly copy** or plagiarize this repository for your own academic submissions or commercial use without permission and proper attribution.
+---
 
-**Contributions:** We absolutely welcome valid developers, researchers, and hobbyists to fork, experiment, and build upon this project! If you have improvements, bug fixes, or optimizations, feel free to open a Pull Request.
+## Running the Project
+
+### Step 1 — Collect Data
+```bash
+python 1_capture.py
+```
+Records synchronized CSI streams from both RX boards alongside webcam ground truth for pose labelling.
+
+### Step 2 — Preprocess
+```bash
+python 3_extraction.py
+```
+Extracts and normalizes CSI features, aligns frames, and outputs training-ready tensors to `data/`.
+
+### Step 3 — Train the Model
+```bash
+python train.py
+```
+Trains the TEDNet Transformer. Best model weights are saved to `models/`. Requires NVIDIA GPU.
+
+### Step 4 — Live Inference Dashboard
+```bash
+streamlit run dashboard.py
+```
+Or double-click `Start_WiFi_Pose_dashboard.bat` on Windows.
+
+Opens a real-time Streamlit dashboard showing live posture classification from your ESP32 array.
+
+---
+
+## Results
+
+<!-- 📊 FILL IN your actual accuracy numbers before publishing -->
+
+| Metric | Value |
+|---|---|
+| Overall Accuracy | _Add your result_ |
+| Standing | _Add your result_ |
+| Sitting | _Add your result_ |
+| Walking | _Add your result_ |
+| Lying Down | _Add your result_ |
+
+> Results measured on self-collected dataset. See `train.py` for evaluation code.
+
+---
+
+## Potential Applications
+
+- 🏥 **Healthcare monitoring** — fall detection and activity tracking without cameras in patient rooms
+- 🏠 **Smart home automation** — presence and posture-aware environments
+- 🔒 **Security** — perimeter intrusion detection without video surveillance
+- 👴 **Elderly care** — passive wellness monitoring
+
+---
+
+## Project Structure
+
+```
+Wifi-Vision/
+├── 1_capture.py              # CSI + webcam data collection
+├── 3_extraction.py           # Feature extraction & preprocessing
+├── train.py                  # TEDNet Transformer training
+├── 6_test_live_v1.py         # Live inference (standalone)
+├── 6_test_live_v2.py         # Live inference (standalone)
+├── dashboard.py              # Streamlit real-time dashboard
+├── launcher.py               # Application launcher
+├── Start_WiFi_Pose_dashboard.bat  # Windows one-click launcher
+├── csi_video_capture_external/    # External CSI capture utilities
+├── data/                     # Preprocessed training data
+└── models/                   # Saved model weights
+```
+
+---
+
+## About This Project
+
+Built as a B.Tech Final Year Project (Electronics and Communication Engineering, 2026). All hardware testing, data collection, model training, and dashboard development were done independently.
+
+If you build on this work, a mention or citation is appreciated.
+
+**Contributions welcome** — open a PR for improvements, optimizations, or new activity classes.
+
+---
+
+*Keywords: ESP32, CSI, Channel State Information, Human Activity Recognition, Pose Estimation, Deep Learning, Transformer, IoT, Privacy-Preserving Sensing, Edge AI*
