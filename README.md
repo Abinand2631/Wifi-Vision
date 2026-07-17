@@ -3,6 +3,8 @@
 **Device-free, camera-free human pose estimation and activity recognition using Wi-Fi CSI and deep learning.**
 
 > Built on 3× ESP32 microcontrollers + a custom TEDNet Transformer architecture. No cameras. No wearables. Just Wi-Fi signals.
+>
+> Inspired by WiFi-based DensePose research — achieving device-free human sensing without cameras using commodity ESP32 hardware.
 
 ### 🎬 [Watch Demo Video](https://drive.google.com/file/d/1l8e24t6Lv1ghA38wdgP2RLYSV3KqK4ME/view?usp=drive_link)
 
